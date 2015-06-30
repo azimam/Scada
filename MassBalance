@@ -1,0 +1,49 @@
+PROGRAM MassBalanceLogic															
+
+VAR
+(* FLOW RATES *)
+PropaneInFlowRate1		AT		%M(..Inlet meter 1.values. Flow Rate):LREAL;
+PropaneInFlowRate2		AT		%M(..Inlet meter 2.values. Flow Rate):LREAL;
+PropaneOutFlowRate		AT		%M(..Inlet meter 2.values. Flow Rate):LREAL;
+
+(*VOLUMES*)
+PropaneInVolume1		AT		%M(..Inlet meter 1.values.Volume):LREAL;
+PropaneInVolume2		AT		%M(..Inlet meter 2.values.Volume):LREAL;
+PropaneOutVolume		AT		%M(..Inlet meter 2.values.Volume):LREAL;
+
+(*Calculated Values (Internal Points)*)
+Balance					AT 			%M(.Balance) 					:LREAL;
+BalanceVolume 	AT 			%M(.BalanceVolume) 		:LREAL;
+Total						AT			%M(.Total)						:LREAL;
+TotalVolume			AT			%M(.TotalVolume)			:LREAL;
+DiffPCT					AT 			%M(.DiffPCTFlow) 			:LREAL;																
+Diff						AT 			%M(.DiffFlow) 				:LREAL;
+DiffPCTVolume		AT 			%M(.DiffPCTVolume) 		:LREAL;																
+DiffVolume			AT 			%M(.DiffVolume) 			:LREAL;
+
+END_VAR	
+
+Balance		:=  PropaneInFlowRate1 + PropaneInFlowRate1;
+Balance 	:=  PropaneInVolume1 + PropaneInVolume2;
+
+Total					:=	PropaneOutFlowRate;
+TotalVolume		:=	PropaneOutVolume;
+
+Diff					:= (Total - Balance);
+DiffVolume 		:= (TotalVolume - BalanceVolume);
+
+
+IF (Balance > 0) THEN
+	DiffPCT 	:= (Diff * 100) / Balance;
+ELSE
+	DiffPCT 	:= 100;
+END_IF;
+
+IF (BalanceVolume > 0) THEN
+	DiffPCTVolume 	:= (DiffVolume * 100) / BalanceVolume;
+ELSE
+	DiffPCTPropaneVolume 	:= 100;
+END_IF;
+;																								
+
+END_PROGRAM	
