@@ -1,0 +1,112 @@
+//The calculation formula is used in place of the summaries in Calculated Members.
+// This calculation formula must return a/an Number value.
+IF CurrentColumnIndex >1 Then
+GridValueAt(GetRowPathIndexOf("Falls City Delivery to Pipe"), (CurrentColumnIndex), CurrentSummaryIndex)
++ GridValueAt(GetRowPathIndexOf("Manka Lact Meter 601"), (CurrentColumnIndex), CurrentSummaryIndex)
++ GridValueAt(GetRowPathIndexOf("Linehart Lact Meter 600"), (CurrentColumnIndex), CurrentSummaryIndex)
++ GridValueAt(GetRowPathIndexOf("Marathon Lact Meter 602"), (CurrentColumnIndex), CurrentSummaryIndex)
+-(GridValueAt(GetRowPathIndexOf("Falls City Delivery to Pipe"), (CurrentColumnIndex-1), CurrentSummaryIndex)
++ GridValueAt(GetRowPathIndexOf("Manka Lact Meter 601"), (CurrentColumnIndex-1), CurrentSummaryIndex)
++ GridValueAt(GetRowPathIndexOf("Linehart Lact Meter 600"), (CurrentColumnIndex-1), CurrentSummaryIndex)
++ GridValueAt(GetRowPathIndexOf("Marathon Lact Meter 602"), (CurrentColumnIndex-1), CurrentSummaryIndex))
+
+ELse 0
+
+
+//The insertion formula determines where this calculated member is inserted. It must return a Boolean value.
+GetRowGroupIndexOf(CurrentRowIndex) = 1 and GridRowColumnValue("KNPSstatement.FieldName") = "Marathon Lact Meter 602"
+
+// This conditional formatting formula must return one of the following Color Constants:
+// 
+// Color (red, green, blue)
+// crBlack
+// crMaroon
+// crGreen
+// crOlive
+// crNavy
+// crPurple
+// crTeal
+// crSilver
+// crRed
+// crLime
+// crYellow
+// crBlue
+// crFuchsia
+// crAqua
+// crWhite
+// crNoColor
+// 
+Select GridRowColumnValue("KNPSstatement.FieldName")
+case "Truck LACT 1 Meter 604" : Color (242, 220, 219)
+case "Truck LACT 2 Meter 605" : Color (242, 220, 219)
+case "Truck LACT 3 Meter 606" : Color (242, 220, 219)
+case "Truck LACT 4 Meter 607" : Color (242, 220, 219)
+case "Tank 400" : Color (242, 220, 219)
+case "Tank 401" : Color (242, 220, 219)
+case "Tank 402" : Color (242, 220, 219)
+case "Tank 403" : Color (242, 220, 219)
+Case "Tank Sales Meter" : Color (242, 220, 219)
+case "Manka Lact Meter 601" : Color (242, 220, 219)
+case "Linehart Lact Meter 600" : Color (242, 220, 219)
+case "Marathon Lact Meter 602" : Color (242, 220, 219)
+case "Elmendorf ReDelivery Meter 610" : Color (242, 220, 219)
+case "Terminal Expected Inventory" : Color (197, 217, 241)
+case "Terminal Gain/(Loss)" : Color (197, 217, 241)
+case "Pipeline Gain/Loss" : Color (197, 217, 241)
+
+
+Default: crNoColor
+
+// This conditional formatting formula must return one of the following Font Style Constants:
+// 
+// crRegular
+// crBold
+// crItalic
+// crBoldItalic
+// 
+Select GridRowColumnValue("KNPSstatement.FieldName")
+case "Terminal Expected Inventory" :  crBold
+case "Terminal Gain/(Loss)" :  crBold
+case "Pipeline Gain/Loss" :  crBold
+Default : crRegular
+
+// This conditional formatting formula must return one of the following Color Constants:
+// 
+// Color (red, green, blue)
+// crBlack
+// crMaroon
+// crGreen
+// crOlive
+// crNavy
+// crPurple
+// crTeal
+// crSilver
+// crRed
+// crLime
+// crYellow
+// crBlue
+// crFuchsia
+// crAqua
+// crWhite
+// crNoColor
+// 
+if isnull({HisProdDayStart.Value}) then crBlack else
+
+If ( GridRowColumnValue("KNPSstatement.FieldName") = "Truck LACT 1 Meter 604"  
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Truck LACT 2 Meter 605" 
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Truck LACT 3 Meter 606" 
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Truck LACT 4 Meter 607"
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Tank 400"  
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Tank 401" 
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Tank 402" 
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Tank 403"
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Tank Sales Meter" 
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Manka Lact Meter 601" 
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Linehart Lact Meter 600" 
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Marathon Lact Meter 602"
+    OR GridRowColumnValue("KNPSstatement.FieldName") = "Elmendorf ReDelivery Meter 610" )
+
+Then crBlue
+//CrosstapGroup option
+toText (CDATE(dateadd("D",-1,{HisProdDayStart.RecordTime})))
+
