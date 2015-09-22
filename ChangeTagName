@@ -1,0 +1,113 @@
+PROGRAM ChangeTagName
+
+	VAR
+
+	GoodResponse    	AT      %M(..Comms.Good Responses.TagName):STRING;
+	NoResponse    		AT      %M(..Comms.No Responses.TagName):STRING;
+	PctGoodPolls   		AT      %M(..Comms.Pct Good Polls.TagName):STRING;
+	TimeoutToday   		AT      %M(..Comms.Timeouts.TagName):STRING;
+	Demand		   		AT      %M(..Comms.Demand.TagName):STRING;
+	Pause		   		AT      %M(..Comms.Pause.TagName):STRING;
+	StatReset			AT      %M(..Comms.Stat Reset.TagName):STRING;
+	Interval1	  		AT      %M(..Comms.Interval 1.InService):INT;
+	LastPoll	  		AT      %M(..Comms.Last Poll.InService):INT;
+	LastPollTime  		AT      %M(..Comms.Last Poll Time.InService):INT;
+
+
+	END_VAR
+
+
+	(* Internal Variables *)
+
+	
+	VAR
+		
+		dLastBracketLocation	:DINT;
+		dTotalLocation			:DINT;
+		dTotalLocation2			:DINT;
+		dTotalLocation3			:DINT;
+		dTotalLocation4			:DINT;
+		dHPWLocation			:DINT;
+		dHPWLocation3			:DINT;
+		dStatLocation			:DINT;
+		
+		
+	END_VAR
+
+
+	
+	(* Internal Variables *)
+
+	
+	dLastBracketLocation :=FIND( GoodResponse , ']');
+	dTotalLocation		 :=FIND( GoodResponse , 'Total');
+	dTotalLocation2		 :=FIND( NoResponse , 'Total');
+	dTotalLocation3		 :=FIND( PctGoodPolls , 'Total');
+	dTotalLocation4		 :=FIND( TimeoutToday , 'Total');
+	dHPWLocation         :=FIND( Demand , '<HPW>');
+	dHPWLocation3		 :=FIND( Pause , '<HPW>');
+	dStatLocation		 :=FIND( StatReset , 'StatReset');
+	
+	
+
+	IF dTotalLocation = 0   THEN
+		IF dLastBracketLocation <> 0  THEN
+			GoodResponse :=CONCAT( INSERT( GoodResponse, 'Total',dLastBracketLocation),'s');
+		END_IF
+		;
+
+	END_IF
+	;
+
+	IF dTotalLocation2 = 0   THEN
+		IF dLastBracketLocation <> 0  THEN
+			NoResponse 	 :=CONCAT( INSERT( NoResponse, 'Total',dLastBracketLocation),'s');	
+		END_IF
+		
+		;
+	END_IF
+	;
+	IF dTotalLocation3 = 0   THEN
+		IF dLastBracketLocation <> 0  THEN
+			PctGoodPolls :=INSERT( PctGoodPolls, 'Total',dLastBracketLocation);				
+		END_IF
+		;
+
+	END_IF
+	;
+	IF dTotalLocation4 = 0   THEN
+		IF dLastBracketLocation <> 0  THEN
+			TimeoutToday :=CONCAT(DELETE (TimeoutToday, 12, 1+dLastBracketLocation),'TotalTimeouts');	
+		END_IF
+		;
+
+	END_IF
+	;
+		IF dHPWLocation <> 0   THEN
+			IF dLastBracketLocation <> 0  THEN
+			Demand :=CONCAT(DELETE (Demand, 11, 1+dLastBracketLocation),'Demand');	
+			END_IF
+			;
+		END_IF
+		;
+		IF dHPWLocation3 <> 0   THEN
+			IF dLastBracketLocation <> 0  THEN
+			Pause :=CONCAT(DELETE (Pause, 10, 1+dLastBracketLocation),'Pause');	
+			END_IF
+			;
+		END_IF
+		
+		;
+		
+			IF dLastBracketLocation <> 0  THEN
+			StatReset :=CONCAT(DELETE (StatReset, LEN(StatReset)-dLastBracketLocation, 1+dLastBracketLocation),'AllPollReset');	
+			END_IF
+			
+		
+		
+		;
+Interval1 := 0;
+LastPoll  := 0;	
+LastPollTime :=1;
+;
+END_PROGRAM
