@@ -1,0 +1,36 @@
+'this program write 0 (Not ESD) or 1 (ESD) to a digital OPC point when ESD botton is selected
+
+sub ESD()
+     
+     Form.Init("Confirm ESD")
+     Set text = Form.AddStaticText(2, 1, "Please confirm to ESD the Wellpad ")
+     Set yesbutton = Form.AddPushButton(10, 5, "Confrm")
+ 
+     Form.Show()
+     If (Form.Selection = "") Then
+     	MsgBox("Action cancelled")
+		Server.SetOPCValue ".ESD.CurrentValue", 0 
+     	Exit Sub
+     End If
+     Server.SetOPCValue ".ESD.CurrentValue", 1
+
+end sub
+sub Reset()
+     
+     Form.Init("Confirm ESD Reset")
+     Set text = Form.AddStaticText(2, 1, "Please confirm to acknowledge and reset the Wellpad ESD")
+     Set yesbutton = Form.AddPushButton(15, 5, "Confirm")
+     Set Nobutton = Form.AddPushButton(30, 5, "Cancel")
+     
+     Form.Show()
+     
+     If (Form.Selection = "" OR Form.Selection = Nobutton) Then
+     	MsgBox("Action cancelled")
+		Server.SetOPCValue ".ESD.CurrentValue", 1 
+     	Exit Sub
+     End If
+         
+     Server.SetOPCValue ".ESD.CurrentValue", 0
+	 
+
+end sub
