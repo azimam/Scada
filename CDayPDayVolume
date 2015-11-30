@@ -1,0 +1,44 @@
+(*  This Logic Calculate Today Volume and yesterday Volume *)
+(* to calculate Yesterday Volume the program is needed to execute less than 1 min*)
+
+PROGRAM VolumeCalc
+		
+		VAR 
+		VolumeInventory AT %M(.Volume Inventory.CurrentValue) : LREAL; 
+		BBLSCDay AT %M(.BBLS Today.CurrentValue) : LREAL;
+		BBLSPDday AT %M(.BBLS Yesterday.CurrentValue) : LREAL;
+		END_VAR
+		
+		VAR
+		Time :DATE_AND_TIME;
+		PreviousInventory	:LREAL;
+		Hour	:INT;
+		Min		:INT;
+		Check   :BOOL;
+		
+		END_VAR
+		
+		Time:= UTC_TO_LOCAL(NOW());
+		 Hour:=EXTRACT_DT_HOUR (Time);
+		 Min:=EXTRACT_DT_MINUTE (Time);
+		 
+		IF Check = 0 THEN
+			PreviousInventory:=7973.7; (*initializing Previous day Inventory @ ime 11/30/2015 12:00:00 AM *)
+		END_IF;
+		
+		IF Hour = 0 AND Min < 1 THEN 
+			
+			BBLSPDday:=BBLSCDay;
+			PreviousInventory:=PreviousInventory + BBLSPDday;
+			Check:=1;
+			
+			
+		END_IF
+		;
+		
+		BBLSCDay	:=	VolumeInventory - PreviousInventory;
+		
+END_PROGRAM
+
+
+	
