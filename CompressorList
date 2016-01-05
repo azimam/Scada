@@ -1,3 +1,5 @@
+''Bachgroung Color shoud be defined exactly before the colomn under consideration''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 SELECT
 	STATION , SUCTIONPRESSURE AS "        Suction\n Pressure (PSI)", DISCHARGEPRESSURE AS "      Discharge\n Pressure (PSI)", TEMPERATURE AS "    Temperature\n         (deg F)", FLOWRATE AS "    Flow Rate\n       (MCFD)", TODAYVOLUME AS "    Today's Volume\n           (MCF)", YESTERDAYVOLUME AS "    Yesterday's\n  Volume (MCF)"
