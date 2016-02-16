@@ -1,0 +1,8 @@
+SELECT
+	"FullName" AS "~FullName", "Id", "CurrentTime", "AlarmViewLink"
+FROM
+	CDBPOINT
+WHERE
+	( "~FullName" LIKE '%Comms.Status%' ) AND ( ( "CurrentValueFormatted" = '2' ) OR ( "CurrentValueFormatted" = '3' ) 
+	OR ( "CurrentValueFormatted" = '5' ) OR ( "CurrentValueFormatted" = '6' ) OR ( "CurrentValueFormatted" = '7' ) ) 
+	AND ( "~FullName" LIKE 'HOEnergy%' )
