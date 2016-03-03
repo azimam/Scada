@@ -109,6 +109,7 @@ If ( GridRowColumnValue("KNPSstatement.FieldName") = "Truck LACT 1 Meter 604"
 Then crBlue
 //CrosstapGroup option
 toText (CDATE(dateadd("D",-1,{HisProdDayStart.RecordTime})))
+
 ///back ground color based on the CurrentFieldValue
 if (CurrentFieldValue =1 And  GridRowColumnValue("OPSummary.FullName") = "Clark" And CurrentColumnIndex<13)
     OR (CurrentFieldValue =1 And  GridRowColumnValue("OPSummary.FullName") = "Greenzweig" And CurrentColumnIndex<6)
