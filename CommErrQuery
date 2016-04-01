@@ -1,0 +1,8 @@
+SELECT TOP( 100000 )
+	"Source" AS "FullName", "RecordTime" AS "RecordTime", "Message", "Category"
+FROM
+	CDBEVENTJOURNAL
+WHERE
+	( "RecordTime" BETWEEN { OPC 'H-23H' } AND { OPC 'H+1H' } ) AND ( ( "Source" LIKE '%Scanner%' ) OR ( "Source" LIKE '%OutStation' ) ) AND ( "Message" LIKE 'Failed%' )
+ORDER BY
+	"RecordTime" DESC
