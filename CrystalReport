@@ -126,3 +126,10 @@ if (CurrentFieldValue =1 And  GridRowColumnValue("OPSummary.FullName") = "Clark"
     OR (CurrentFieldValue =0 And  GridRowColumnValue("OPSummary.FullName") = "Laurel Hill" And CurrentColumnIndex<7)
 then crRed
  else crWhite
+ 
+ Selection Export - Record
+ {HisProdDayStart.RecordTime} in {?Start Date} to {?End Date} 
+ //Start Date and End Date are parameter fields
+ //Another Sample: just shows today and yesterdays value
+ {HisProdDayStart.RecordTime} in CurrentDate-1 to CurrentDate
+ 
