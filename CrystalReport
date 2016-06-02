@@ -133,3 +133,5 @@ then crRed
  //Another Sample: just shows today and yesterdays value
  {HisProdDayStart.RecordTime} in CurrentDate-1 to CurrentDate
  
+//Selection Export >>Detail>> Color
+if Remainder(RecordNumber,2)=0 then crSilver else crNoColor
