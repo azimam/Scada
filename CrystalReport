@@ -11,10 +11,26 @@ GridValueAt(GetRowPathIndexOf("Falls City Delivery to Pipe"), (CurrentColumnInde
 + GridValueAt(GetRowPathIndexOf("Marathon Lact Meter 602"), (CurrentColumnIndex-1), CurrentSummaryIndex))
 
 ELse 0
+//
+Local NumberVar i;
+Local NumberVar Total;
+Local NumberVar Ave;
+
+
+For i:=0 To Day(CurrentDate)-2  Do
+(
+Total:= Total + GridValueAt(i, (CurrentColumnIndex), (CurrentSummaryIndex));
+);
+
+Ave := Total/(Day(CurrentDate)-1);
+Ave
+//
 
 
 //The insertion formula determines where this calculated member is inserted. It must return a Boolean value.
 GetRowGroupIndexOf(CurrentRowIndex) = 1 and GridRowColumnValue("KNPSstatement.FieldName") = "Marathon Lact Meter 602"
+//
+GetRowGroupIndexOf(CurrentRowIndex) = 1 and GridRowColumnValue("HisDailyAverage.RecordTime") = DateSerial(Year(Today()),Month(DateAdd("m", 1, Today())),0)
 
 // This conditional formatting formula must return one of the following Color Constants:
 // 
