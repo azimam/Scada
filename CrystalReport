@@ -132,6 +132,8 @@ then crRed
  //Start Date and End Date are parameter fields
  //Another Sample: just shows today and yesterdays value
  {HisProdDayStart.RecordTime} in CurrentDate-1 to CurrentDate
+ //start date is the first day of current  month and endDate is the last day of current month
+ {HisDailyAverage.RecordTime}  in Date (Year (CurrentDate), Month (CurrentDate), 1) to DateSerial(Year(Today()),Month(DateAdd("m", 1, Today())),0)
  
 //Selection Export >>Detail>> Color
 if Remainder(RecordNumber,2)=0 then crSilver else crNoColor
