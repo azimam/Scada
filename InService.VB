@@ -10,7 +10,6 @@ Sub Inservive()
 	for i=0 To  (qry.rowcount - 1 )
 		Name = qry.rows
 		Set obj=server.FindObject(Name(i,0))
-		
 		obj.interface.Inservice=1
 	Next	
 End Sub
@@ -24,7 +23,6 @@ Sub OutOfservive()
 	for i=0 To  (qry.rowcount - 1 )
 		Name = qry.rows
 		Set obj=server.FindObject(Name(i,0))
-		
 		obj.interface.Inservice=0
 	Next	
 End Sub
