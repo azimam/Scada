@@ -1,6 +1,6 @@
 'this program put all scanner otstation and channel which are listed in the InService Channel Scanner datagrid,' 
 'inService or out of service                                                                                   '
-'By Azima 2016                                                                                                 '
+'By Azima, 2016                                                                                                 '
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Sub Inservive()
 	dim qry, Name , i ,obj
