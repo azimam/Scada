@@ -1,0 +1,39 @@
+PROGRAM NewStructuredTextProgram
+
+VAR
+
+Status		 AT %M(Howard.zz Test.Status.CurrentValue) 	: LREAL;
+StatusP 	 AT %M(Howard.zz Test.Status.PreviousValue) : LREAL;
+NoteStatus   AT %M(Howard.zz Test.Status.NoteText) 		: STRING;
+TimeC 		 AT %M(Howard.zz Test.Status.CurrentTime)   : DATE_AND_TIME;
+Time0 		 AT %M(Howard.zz Test.Time0)				: DATE_AND_TIME;
+Time1  		 AT %M(Howard.zz Test.Time1)				: DATE_AND_TIME;
+
+END_VAR
+
+VAR
+
+TimeD : TIME;
+
+END_VAR
+
+IF Status=0  AND  StatusP=1 THEN
+	 Time0 := TimeC ; 
+	 TimeD := SUB_DT_DT(Time0,Time1);
+	ELSIF Status=1  AND  StatusP=0 THEN
+		Time1 := TimeC ;
+		TimeD := SUB_DT_DT(Time1,Time0);
+END_IF;
+			
+	NoteStatus := TIME_TO_STRING(TimeD);
+	;
+END_PROGRAM
+
+'''''''''''''''''''''''''''''''
+'Email Rediction Message'
+
+ %OAlarmSource%.  Current Value is: %OCurrentValueFormatted% , TimeInterval is: %ONoteText%
+
+
+
+
