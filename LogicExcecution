@@ -1,0 +1,15 @@
+PROGRAM SetupLogicExcecution
+
+	
+	METHOD
+	  mExecution	 	AT %M(.Logics.Execute) ;
+		mEnableExecution 	AT %M(.Logic.EnsableExecution);
+		mDisableExecution 	AT %M(.Logic.DisableExecution);
+	END_METHOD
+	
+
+mEnableExecution();
+mExecution();
+mDisableExecution();
+
+END_PROGRAM
