@@ -1,0 +1,37 @@
+sub Write()
+ Form.Init("Confirm Write to PLC")
+     Set text = Form.AddStaticText(2, 1, "Please confirm to acknowledge and Write the data to PLC")
+     Set yesbutton = Form.AddPushButton(15, 5, "Confirm")
+     Set Nobutton = Form.AddPushButton(30, 5, "Cancel")
+     
+     Form.Show()
+      If (Form.Selection = "") Or (Form.Selection = Nobutton) Then
+     	MsgBox("Action cancelled")
+		Exit Sub
+     End If
+Server.SetOPCValue  ".Gas Quality.Argon.CurrentValue",Server.GetOPCValue (".Argon.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Argon.CurrentValue" ,Server.GetOPCValue ("Argon.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Carbon Dioxide.CurrentValue" ,Server.GetOPCValue ("Carbon Dioxide.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Carbon Monoxide.CurrentValue" ,Server.GetOPCValue ("Carbon Monoxide.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Ethane C2H6.CurrentValue" ,Server.GetOPCValue ("Ethane C2H6.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Gravity.CurrentValue" ,Server.GetOPCValue ("Gravity.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Heating Value.CurrentValue" ,Server.GetOPCValue ("Heating Value.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Helium.CurrentValue" ,Server.GetOPCValue ("Helium.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Hydrogen.CurrentValue" ,Server.GetOPCValue ("Hydrogen.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Hydrogen Sulfide .CurrentValue" ,Server.GetOPCValue ("Hydrogen Sulfide .CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Methane CH4.CurrentValue" ,Server.GetOPCValue ("Methane CH4.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Nitrogen.CurrentValue" ,Server.GetOPCValue ("Nitrogen.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Oxygen.CurrentValue" ,Server.GetOPCValue ("Oxygen.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Propane C3H8.CurrentValue" ,Server.GetOPCValue ("Propane C3H8.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.Water.CurrentValue" ,Server.GetOPCValue ("Water.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.i-Butane.CurrentValue" ,Server.GetOPCValue ("i-Butane.CurrentValue")
+Server.SetOPCValue  ".Gas Qualityi-Pentane.CurrentValue" ,Server.GetOPCValue ("i-Pentane.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.n-Butane.CurrentValue" ,Server.GetOPCValue ("n-Butane.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.n-Decane.CurrentValue" ,Server.GetOPCValue ("n-Decane.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.n-Heptane.CurrentValue" ,Server.GetOPCValue ("n-Heptane.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.n-Hexane.CurrentValue" ,Server.GetOPCValue ("n-Hexane.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.n-Nonane.CurrentValue" ,Server.GetOPCValue ("n-Nonane.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.n-Octane.CurrentValue" ,Server.GetOPCValue ("n-Octane.CurrentValue")
+Server.SetOPCValue  ".Gas Quality.n-Pentane.CurrentValue" ,Server.GetOPCValue ("n-Pentane.CurrentValue")
+
+ENd Sub 
