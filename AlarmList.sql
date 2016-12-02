@@ -4,3 +4,11 @@ FROM
 	CPOINTALG
 WHERE
 	( "FullName" LIKE '%' ) AND ( ( "HighHighSeverityType" = 2 ) OR ( "HighSeverityType" = 2 ) OR ( "LowSeverityType" = 2 ) OR ( "LowLowSeverityType" = 2 ) OR ( "OverrangeSeverityType" = 2 ) OR ( "UnderrangeSeverityType" = 2 ) )
+	
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Digital'''''''''''''''''''''''''''''''''''''''''''''''''''''
+SELECT
+	FULLNAME, "State0Desc", CASE  WHEN CAST( STATE0SEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( STATE0SEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "State0 Severity Type", CASE  WHEN CAST( STATE0SEVERITY AS STRING ) = '1000' THEN 'Critical' WHEN CAST( STATE0SEVERITY AS STRING ) = '667' THEN 'High' WHEN CAST( STATE0SEVERITY AS STRING ) = '334' THEN 'Medium' ELSE 'Low' END AS "State0 Severity", "State1Desc", CASE  WHEN CAST( STATE1SEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( STATE1SEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "State1 Severity Type", CASE  WHEN CAST( STATE1SEVERITY AS STRING ) = '1000' THEN 'Critical' WHEN CAST( STATE1SEVERITY AS STRING ) = '667' THEN 'High' WHEN CAST( STATE1SEVERITY AS STRING ) = '334' THEN 'Medium' ELSE 'Low' END AS "State1 Severity"
+FROM
+	CPOINTDIGITAL
+WHERE
+	PARENTGROUPNAME LIKE '%%' AND ( STATE0SEVERITYTYPE = 2 OR STATE1SEVERITYTYPE = 2 )
