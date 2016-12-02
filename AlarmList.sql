@@ -1,3 +1,4 @@
+'Analog Alarm'
 SELECT
 	FULLNAME, PARENTGROUPNAME, "FullScale", CASE  WHEN CAST( OVERRANGESEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( OVERRANGESEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "Overrange Severity", "HighHighLimit", "HighHighDesc", CASE  WHEN CAST( HIGHHIGHSEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( HIGHHIGHSEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "HighHigh Severity", "HighLimit", "HighDesc", CASE  WHEN CAST( HIGHSEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( HIGHSEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "High Severity", "LowLimit", "LowDesc", CASE  WHEN CAST( LOWSEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( LOWSEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "Low Severity", "LowLowLimit", "LowLowDesc", CASE  WHEN CAST( LOWLOWSEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( LOWLOWSEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "LowLow Severity", "ZeroScale", CASE  WHEN CAST( UNDERRANGESEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( UNDERRANGESEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "Underrange Severity"
 FROM
@@ -5,7 +6,8 @@ FROM
 WHERE
 	( "FullName" LIKE '%' ) AND ( ( "HighHighSeverityType" = 2 ) OR ( "HighSeverityType" = 2 ) OR ( "LowSeverityType" = 2 ) OR ( "LowLowSeverityType" = 2 ) OR ( "OverrangeSeverityType" = 2 ) OR ( "UnderrangeSeverityType" = 2 ) )
 	
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Digital'''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Digital Alarm'
+
 SELECT
 	FULLNAME, "State0Desc", CASE  WHEN CAST( STATE0SEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( STATE0SEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "State0 Severity Type", CASE  WHEN CAST( STATE0SEVERITY AS STRING ) = '1000' THEN 'Critical' WHEN CAST( STATE0SEVERITY AS STRING ) = '667' THEN 'High' WHEN CAST( STATE0SEVERITY AS STRING ) = '334' THEN 'Medium' ELSE 'Low' END AS "State0 Severity", "State1Desc", CASE  WHEN CAST( STATE1SEVERITYTYPE AS STRING ) = '0' THEN 'None' WHEN CAST( STATE1SEVERITYTYPE AS STRING ) = '2' THEN 'Alarm' ELSE 'Event' END AS "State1 Severity Type", CASE  WHEN CAST( STATE1SEVERITY AS STRING ) = '1000' THEN 'Critical' WHEN CAST( STATE1SEVERITY AS STRING ) = '667' THEN 'High' WHEN CAST( STATE1SEVERITY AS STRING ) = '334' THEN 'Medium' ELSE 'Low' END AS "State1 Severity"
 FROM
