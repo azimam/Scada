@@ -153,3 +153,15 @@ then crRed
  
 //Selection Export >>Detail>> Color
 if Remainder(RecordNumber,2)=0 then crSilver else crNoColor
+///////////////////////////////////Calculation
+//The calculation formula is used in place of the summaries in Calculated Members.
+// This calculation formula must return a/an Number value.
+Local NumberVar Diff;
+IF CurrentRowIndex >0  Then
+Diff:=GridValueAt((CurrentRowIndex), GetColumnPathIndexOf("Daily Total"), CurrentSummaryIndex)
+-GridValueAt((CurrentRowIndex)-1, GetColumnPathIndexOf("Daily Total"), CurrentSummaryIndex);
+if Diff< 0 then 
+Diff:=0;
+if Diff> 0 then 
+Diff:=Diff;
+Diff
