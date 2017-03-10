@@ -1,0 +1,11 @@
+it should be in a line
+'SELECT ID,FULLNAME AS "_FULLNAME",
+NAME, 
+LOWLOWLIMITSTD AS "Low-Low Limit",
+lowlimitstd AS "Low Limit",
+currentvalueformatted AS "Current Value"
+,highlimitstd AS "High Limit",
+highHighlimitstd AS "High-High Limit" 
+FROM CPOINTALG WHERE "_FULLNAME" LIKE 
+''' +".FullName" + '%''
+AND (lowlowseveritytype = 2 or lowseveritytype = 2 or highseveritytype = 2 or highhighseveritytype = 2) '
