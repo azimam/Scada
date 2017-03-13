@@ -1,0 +1,38 @@
+'===========================================================================================================================
+sub addAlarmState
+	dim rs, recs, i, path, size, rs2, almsrc, qry, group
+	dim mtrname, mtrnumber, ubd, point
+	on error resume next
+	set rs = server.query(mimic.layers(0).item("list").sql)
+	size = rs.rowcount
+	if size = 0 then exit sub
+	recs = rs.rows
+	setbusy(true)
+	mtrnumber = server.getopcvalue(".Name")
+	mtrname = server.getopcvalue(".objDisplayName")
+	if mtrname = "" Then
+		mtrname = server.getopcvalue(".~Config.ConfigParams.psMeterName")
+	end if
+	for i = 0 to size - 1
+		call server.setopcvalue(recs(i, 1) & ".alarmsource", mtrname & " <<" & recs(i,5) & ">> " & mtrnumber )
+		mimic.layers(0).item("items").text = i & " of " & (size - 1) & " points"
+	next
+	setbusy(true)
+	msgbox "COMPLETED"
+end sub
+'===========================================================================================================================
+sub deleteAlarmState
+	dim rs, recs, i, path, size
+	dim mtrname, mtrnumber, ubd, point
+	on error resume next
+	set rs = server.query(mimic.layers(0).item("list").sql)
+	size = rs.rowcount
+	if size = 0 then exit sub
+	recs = rs.rows
+	setbusy(true)
+	for i = 0 to size - 1
+		call server.setopcvalue(recs(i, 1) & ".alarmsource", "")
+	next
+	setbusy(true)
+	msgbox "COMPLETED"
+end sub
