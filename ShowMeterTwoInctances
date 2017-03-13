@@ -1,0 +1,95 @@
+sub ShowMeter()
+	dim objMeter, i, wh, loc, lq
+	Dim obj
+	
+	
+
+	sMeter = Mimic.Layers("New Layer").Item("Lst_1").CurrentRowName
+	sMeterIdx = Mimic.Layers("New Layer").Item("Lst_1").CurrentRowId
+	set obj = server.findobject(sMeter & ".Run")	
+if not obj is nothing then
+	IF sMeterIdx <> 0 Then
+	menu.init
+	menu.additem("Demand Scan")
+	'menu.additem("Demand Scan off")
+	menu.addseparator
+	menu.additem("Alarm Setpoints")
+	'menu.additem("Alarm Enable")
+'	menu.additem("Alarm Disable")
+	menu.addseparator
+	menu.additem("Meter Details")
+	menu.additem("Hourly Details")
+	'''''''''''''''
+	'set objMeter = Server.LookupObject(sMeter)
+	'if Server.ThisObject.CheckAccess("ADM") Then
+	'	menu.addseparator
+	'	menu.additem("Demand Archive Data")
+'	End if
+	i = menu.display
+	if i = 1 then
+		call server.setopcvalue(sMeter & ".Comm.Demand",1)
+		     Form.Init("Confirm Demand Poll")
+     Set text = Form.AddStaticText(2, 1, "Hit 'Ok' to Confirm Demand")
+     Set yesbutton = Form.AddPushButton(20, 5, "Ok")
+     
+     Form.Show()
+     
+     If (Form.Selection = "") Then
+     	MsgBox("Action cancelled") 
+     	Exit Sub
+     End If
+	'elseif i = 2 then
+		'call server.setopcvalue(sMeter & ".Comm.Demand",0)
+	elseif i = 2 then
+		mimic.openinset "SCX:////CMimic/" & sMeter & ".SetAlarms", 10, 10, 80, 80
+	'elseif i = 4 then
+	'	call server.setopcvalue(sMeter & ".AlarmDisabled",0)
+	'elseif i = 5 then
+		''call server.setopcvalue(sMeter & ".AlarmDisabled",1)
+	elseif i = 3 then
+		mimic.openinset "SCX:////CMimic/" & sMeter & ".Run.~Details", 10, 10, 80, 80
+	elseif i = 4 then
+		mimic.openinset "SCX:////CMimic/" & sMeter & ".Run.~Hourly", 10, 10, 80, 80
+	'elseif i = 5 then
+		'call server.setopcvalue(sMeter & ".Comm.Demand_Archive",1)
+	end if
+End If
+Else
+IF sMeterIdx <> 0 AND sMeter <> "" Then
+	menu.init
+	menu.additem("Demand Scan")
+	menu.addseparator
+	menu.additem("Meter Details")
+	menu.additem("Hourly Details")
+	'''''''''''''''
+	'set objMeter = Server.LookupObject(sMeter)
+	'if Server.ThisObject.CheckAccess("ADM") Then
+	'	menu.addseparator
+	'	menu.additem("Demand Archive Data")
+'	End if
+	i = menu.display
+	if i = 1 then
+		sMeter=LEFT (sMeter,LEN(sMeter)-9)
+		'MsgBox sMeter
+		call server.setopcvalue(sMeter & ".Comm.Demand",1)
+		     Form.Init("Confirm Demand Poll")
+     Set text = Form.AddStaticText(2, 1, "Hit 'Ok' to Confirm Demand")
+     Set yesbutton = Form.AddPushButton(20, 5, "Ok")
+     
+     Form.Show()
+     
+     If (Form.Selection = "") Then
+     	MsgBox("Action cancelled") 
+     	Exit Sub
+     End If
+
+	elseif i = 2 then
+		mimic.openinset "SCX:////CMimic/" & sMeter & ".~Details", 10, 10, 80, 80
+	elseif i = 3 then
+		mimic.openinset "SCX:////CMimic/" & sMeter & ".~Hourly", 10, 10, 80, 80
+	
+	end if
+End If
+	
+End If
+end sub
