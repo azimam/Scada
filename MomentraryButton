@@ -1,0 +1,25 @@
+sub Pump1Primary()
+Dim Sec
+Form.Init("Confirm Pump 1 Primary selection")
+
+    Form.Init("Confirm Pump1 Primary")
+     Set text = Form.AddStaticText(2, 1, "Please confirm to select Pump 1 as priamary")
+     Set yesbutton = Form.AddPushButton(7, 5, "Confirm")
+     Set Nobutton = Form.AddPushButton(23, 5, "Cancel")
+     
+     Form.Show()
+     
+     If (Form.Selection = "" OR Form.Selection = Nobutton) Then
+     	MsgBox("Action cancelled")
+		Exit Sub
+     End If
+	
+	Server.SetOPCValue "Pump Station.Pump Station 6.Pump1.Primary.CurrentValue", 1
+  waitTime = Now() + TimeValue("00:01:00")
+    While Now() < waitTime
+        Sec=Sec+1
+    Wend	
+	Server.SetOPCValue "Pump Station.Pump Station 6.Pump1.Primary.CurrentValue", 0
+	
+	
+end sub
