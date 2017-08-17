@@ -1,0 +1,121 @@
+
+(*   
+   Program Function		 : Smrart Meter Summary Data Grid  
+   Developed By			 :   Azima
+*)
+
+ 
+(* Place Holder for Query Result *)
+TYPE LIST:
+	STRUCT
+		ParentGroupName	:STRING;
+	END_STRUCT;
+END_TYPE 
+
+PROGRAM MeterDGGen
+
+(* This is the code that acually builds list. You will note that it checks if instance 
+is already in the list and finds all instances which has a mimic called Meter *)
+
+VAR
+	Q1 AT %S(SELECT CTemplateInstance.FullName FROM CTemplateInstance WHERE CTemplateInstance.TemplateId = 871855 AND  CTemplateInstance.FullNAME  LIKE '%Evolution%' AND  CTemplateInstance.FullNAME   Not LIKE '%Xseries%'   AND CTemplateInstance.FullNAME NOT IN ( SELECT EvolutionMeter.WELLFULLNAME FROM EvolutionMeter )) : RESULTSET OF LIST;
+END_VAR
+
+
+VAR
+	CurrentRow		:DINT;   
+	dotLocation		:DINT;
+	dotLocation3	:DINT;
+	InstName		  :STRING;
+	SysName			  :STRING;
+	SubSysName		:STRING;
+END_VAR
+
+(* This references the Data Grid object *)
+METHOD
+	InsertRow AT %M(.Meter Summary.InsertRow)         :DINT;
+	SetCellExpr	AT %M(.Meter Summary.SetCellExpr)		:DINT, STRING, STRING;
+	mDisableExecution AT %M(.Meter DG Gen.DisableExecution); 
+END_METHOD
+
+
+CurrentRow	:= 1;
+
+Q1.First();
+
+(* This builds the DataGrid with the references/points from each instance.   
+Make sure every point that is to be displayed in list is included *) 
+
+IF Q1.Valid THEN 
+		InsertRow( 0 );
+		InstName:=Q1.Value.ParentGroupName; 
+		FOR j:= 1 TO 10 DO
+		dotLocation := FIND (InstName, '.');
+			IF  dotLocation <> 0 THEN
+			InstName := RIGHT (InstName,LEN(InstName)- dotLocation);
+			ELSE
+			InstName:=InstName;
+			dotLocation3:=LEN(InstName);
+			END_IF;
+		
+		END_FOR;
+		InstName := LEFT (Q1.Value.ParentGroupName,LEN(Q1.Value.ParentGroupName)-LEN(InstName)- 1);
+(***********)		
+		SubSysName:=InstName;
+		FOR j:= 1 TO 10 DO
+		dotLocation := FIND (SubSysName, '.');
+			IF  dotLocation <> 0 THEN
+			SubSysName := RIGHT (SubSysName,LEN(SubSysName)- dotLocation);
+			ELSE
+			SubSysName:=SubSysName;
+			END_IF;
+		
+		END_FOR;
+		SubSysName := LEFT (InstName,LEN(InstName)-LEN(SubSysName)- 1);
+(***********)		
+		SysName:=SubSysName;
+		FOR j:= 1 TO 10 DO
+		dotLocation := FIND (SysName, '.');
+			IF  dotLocation <> 0 THEN
+			SysName := RIGHT (SysName,LEN(SysName)- dotLocation);
+			ELSE
+			SysName:=SysName;
+			END_IF;
+			END_FOR;
+		SysName := LEFT (SubSysName,LEN(SubSysName)-LEN(SysName)- 1);
+		
+
+		CurrentRow := 1;
+		SetCellExpr( CurrentRow ,'WellName', CONCAT('"', Q1.Value.ParentGroupName, '.Name"'));
+		SetCellExpr( CurrentRow ,'WellNumber', CONCAT('"', InstName, '.Name"'));
+		SetCellExpr( CurrentRow ,'WellFullName', CONCAT('"', Q1.Value.ParentGroupName, '.FullName"'));
+		SetCellExpr( CurrentRow ,'Quality', CONCAT('"', Q1.Value.ParentGroupName, '.Current Values.Temp.CurrentQuality"'));
+		SetCellExpr( CurrentRow ,'DailyVolume', CONCAT('"', Q1.Value.ParentGroupName, '.Current Values.CDay Volume"'));
+		SetCellExpr( CurrentRow ,'DailyEnergy', CONCAT('"', Q1.Value.ParentGroupName, '.Current Values.CDay Energy"'));
+		SetCellExpr( CurrentRow ,'Differential', CONCAT('"', Q1.Value.ParentGroupName, '.Current Values.Heating Value"'));
+		SetCellExpr( CurrentRow ,'Differential', CONCAT('"', Q1.Value.ParentGroupName, '.Current Values.Diff Press"'));
+		SetCellExpr( CurrentRow ,'Pressure', CONCAT('"', Q1.Value.ParentGroupName, '.Current Values.Static Press"'));
+		SetCellExpr( CurrentRow ,'YestVolume', CONCAT('"', Q1.Value.ParentGroupName, '.Daily Values.PDay Volume"'));
+		SetCellExpr( CurrentRow ,'YestEnergy', CONCAT('"', Q1.Value.ParentGroupName, '.Daily Values.PDay Energy"'));
+		SetCellExpr( CurrentRow ,'Temperature', CONCAT('"', Q1.Value.ParentGroupName, '.Current Values.Temp"'));
+		SetCellExpr( CurrentRow ,'FlowRate', CONCAT('"', Q1.Value.ParentGroupName, '.Current Values.Flow Rate"'));
+		SetCellExpr( CurrentRow ,'YestDifferential', CONCAT('"', Q1.Value.ParentGroupName, '.Daily Values.PDay Diff Press"'));
+		SetCellExpr( CurrentRow ,'YestPressure', CONCAT('"', Q1.Value.ParentGroupName, '.Daily Values.PDay Static Press"'));		
+		SetCellExpr( CurrentRow ,'YestTemperature', CONCAT('"', Q1.Value.ParentGroupName, '.Daily Values.PDay Temp"'));	
+		SetCellExpr( CurrentRow ,'LastPoll', CONCAT('"', InstName, '.AES Device.Comms.Last Poll Time.CurrentTime"'));
+		SetCellExpr( CurrentRow ,'SubSystem', CONCAT('"',SubSysName, '.Name"'));
+		SetCellExpr( CurrentRow ,'System', CONCAT('"',SysName, '.Name"'));		
+		
+END_IF;
+
+END_PROGRAM
+
+'''''''''''Query'''''''''
+SELECT DISTINCT
+	CASE EVOLUTIONMETER.QUALITY WHEN 192 THEN 65280 ELSE 255 END AS "~{Background1}", ' ' AS "~Quality", EVOLUTIONMETER.WELLNAME AS "Meter Number", WELLNUMBER AS "~Meter", FORMATVALUE( EVOLUTIONMETER.TEMPERATURE USING '#,###.##' ) AS "Temp", FORMATVALUE( EVOLUTIONMETER.YESTTEMPERATURE USING '#,###.##' ) AS "PD-Temp", FORMATVALUE( EVOLUTIONMETER.PRESSURE USING '##.##' ) AS "Pressure", FORMATVALUE( EVOLUTIONMETER.YESTPRESSURE USING '##.##' ) AS "PD-Pressure", FORMATVALUE( EVOLUTIONMETER.DIFFERENTIAL USING '##.##' ) AS "DP", FORMATVALUE( EVOLUTIONMETER.YESTDIFFERENTIAL USING '##.##' ) AS "PD-DP", FORMATVALUE( EVOLUTIONMETER.FLOWRATE USING '##.##' ) AS "Flow Rate", FORMATVALUE( EVOLUTIONMETER.HEATINGVALUE USING '##.##' ) AS "Heating Value", FORMATVALUE( EVOLUTIONMETER.DAILYVOLUME USING '##.##' ) AS "Volume", FORMATVALUE( EVOLUTIONMETER.YESTVOLUME USING '##.##' ) AS "PD-Volume", FORMATVALUE( EVOLUTIONMETER.DAILYENERGY USING '##.##' ) AS "Energy", FORMATVALUE( EVOLUTIONMETER.YESTENERGY USING '##.##' ) AS "PD-Energy", FORMATVALUE( EVOLUTIONMETER.LASTPOLL USING 'MM/dd/yyyy HH:mm:SS AM' ) AS "Last Pol Time", CGROUP.FULLNAME AS "_Name"
+FROM
+	CGROUP INNER JOIN EVOLUTIONMETER ON CGROUP.FULLNAME = EVOLUTIONMETER.WELLFULLNAME
+WHERE
+	( EVOLUTIONMETER.WELLNAME LIKE '%%%' )
+ORDER BY
+	"Meter Number" ASC
