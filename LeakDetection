@@ -1,0 +1,39 @@
+Sub LeakDetection()
+Dim FileSys,oFile
+sFileName = "\\leak\y\LeakDetection\dt_download.csv"
+Set FileSys = CreateObject("Scripting.FileSystemObject")
+Set oFile = FileSys.OpenTextFile(sFileName )  
+
+fDataTable = oFile.ReadAll()
+oFile.Close
+
+fPos=InStr(1, fDataTable , ",")
+msgBox "fPos is " & fPos
+fDataTable=LEFT(fDataTable,fPos-1)
+msgBox "ftable now is " & fDataTable
+Number=CInt(fDataTable)
+msgBox  Number
+Set oSvr = CreateObject("Serck.ScxV6Server")
+oSvr.Connect "SERVER", "MIS", "midstream#integrity"
+Set obj = oSvr.FindObject("~azima Test.Leak Detection.Leak Detection")
+
+obj.interface.CurrentValue=Number
+Call Repeat()
+'Break the file into lines and store the number of rows
+'saDataLines = Split(fDataTable, vbCrLf)
+'iRows = UBound(saDataLines)
+'Find the total number of columns
+'saLine = Split(saDataLines(0), ",") 'Split by commas
+'iCols = UBound(saLine)
+'msgBox iRows
+'To access CSV elements:
+'Example to access the 10th row, 3rd column
+'sData_Row = saDataLines(0) '=> "10,Hello World,Testing"
+'saData_Row = Split(sData_Row, ",")
+'sData = saData_Row(2) '=> "Testing"
+END Sub
+
+Sub Repeat()
+Sleep(300000)
+CALL LeakDetection()
+END SUB
