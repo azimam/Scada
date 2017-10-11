@@ -9,3 +9,11 @@ highHighlimitstd AS "High-High Limit"
 FROM CPOINTALG WHERE "_FULLNAME" LIKE 
 ''' +".FullName" + '%''
 AND (lowlowseveritytype = 2 or lowseveritytype = 2 or highseveritytype = 2 or highhighseveritytype = 2) '
+
+''''''''
+'SELECT "Time", MAX( CASE  WHEN ID = ' + STR(".Diff Press.Id")   + ' THEN FORMATVALUE( COALESCE( "Value", 0.0 ) USING ''#0.00'' ) END ) AS "DP", ' + 
+			' MAX( CASE  WHEN ID = ' + STR(".Static Press.Id") + ' THEN FORMATVALUE( COALESCE( "Value", 0.0 ) USING ''#0.00'' ) END ) AS "SP", ' +
+			' MAX( CASE  WHEN ID = ' + STR(".Temp.Id") + ' THEN FORMATVALUE( COALESCE( "Value", 0.0 ) USING ''#0.000'' ) END ) AS "Temp", ' +
+			' MAX( CASE  WHEN ID = ' + STR(".Flow Rate.Id") + ' THEN FORMATVALUE( COALESCE( "Value", 0.0 ) USING ''#0.00'' ) END ) AS "Flow Rate"' +
+' FROM HISHOURLY10STARTDAY WHERE ID IN ( ' + STR(".Diff Press.Id")   + ','  + STR(".Static Press.Id") + ',' + STR(".Tempe.Id") + ','  + STR(".Flow Rate.Id") +   ' ) AND "Time" >= { OPC ''H - 7D'' } GROUP BY "Time" ORDER BY "Time" DESC'
+
