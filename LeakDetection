@@ -16,6 +16,7 @@ Set FileSys = CreateObject("Scripting.FileSystemObject")
  '    End If
 Set oFile = FileSys.OpenTextFile(sFileName)
 fDataTable = oFile.ReadAll()
+'Reading Second Line of text
 fDataTable = Split(fDataTable, Chr(10))(1)
 oFile.Close
 fPos = InStr(1, fDataTable, ",")
