@@ -1,39 +1,45 @@
+Private Sub Workbook_Open()
+    Call LeakDetection
+
+End Sub
 Sub LeakDetection()
-Dim FileSys,oFile
-sFileName = "\\leak\y\LeakDetection\dt_download.csv"
+Dim FileSys, oFile
+sFileName = "\\scada1\Shares\LeakDetection\dt_download.csv"
 Set FileSys = CreateObject("Scripting.FileSystemObject")
-Set oFile = FileSys.OpenTextFile(sFileName )  
-
+ '   If FileSys Is Nothing Then
+ '
+ '       waitTime = Now() + TimeValue("00:00:10")
+ '       While Now() < waitTime
+ '      Sec = Sec + 1
+'      Wend
+ '      Set FileSys = CreateObject("Scripting.FileSystemObject")
+ '    End If
+Set oFile = FileSys.OpenTextFile(sFileName)
 fDataTable = oFile.ReadAll()
+fDataTable = Split(fDataTable, Chr(10))(1)
 oFile.Close
+fPos = InStr(1, fDataTable, ",")
+fDataTable = Right(fDataTable, Len(fDataTable) - fPos)
+fPos = InStr(1, fDataTable, ",")
+fDataTable = Left(fDataTable, fPos - 1)
 
-fPos=InStr(1, fDataTable , ",")
-msgBox "fPos is " & fPos
-fDataTable=LEFT(fDataTable,fPos-1)
-msgBox "ftable now is " & fDataTable
-Number=CInt(fDataTable)
-msgBox  Number
+Number = CInt(fDataTable)
 Set oSvr = CreateObject("Serck.ScxV6Server")
 oSvr.Connect "SERVER", "MIS", "midstream#integrity"
 Set obj = oSvr.FindObject("~azima Test.Leak Detection.Leak Detection")
+obj.interface.CurrentValue = Number
+'Call Repeat
 
-obj.interface.CurrentValue=Number
-Call Repeat()
-'Break the file into lines and store the number of rows
-'saDataLines = Split(fDataTable, vbCrLf)
-'iRows = UBound(saDataLines)
-'Find the total number of columns
-'saLine = Split(saDataLines(0), ",") 'Split by commas
-'iCols = UBound(saLine)
-'msgBox iRows
-'To access CSV elements:
-'Example to access the 10th row, 3rd column
-'sData_Row = saDataLines(0) '=> "10,Hello World,Testing"
-'saData_Row = Split(sData_Row, ",")
-'sData = saData_Row(2) '=> "Testing"
-END Sub
+End Sub
+
+
 
 Sub Repeat()
-Sleep(300000)
-CALL LeakDetection()
-END SUB
+
+waitTime = Now() + TimeValue("00:01:00")
+    While Now() < waitTime
+        Sec = Sec + 1
+    Wend
+Call LeakDetection
+
+End Sub
