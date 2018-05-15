@@ -165,3 +165,5 @@ Diff:=0;
 if Diff> 0 then 
 Diff:=Diff;
 Diff
+// Diffrent color on grids
+if Remainder(CurrentRowIndex,2)=0 then color(237,237,237) else crNoColor
