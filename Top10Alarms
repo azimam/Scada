@@ -1,0 +1,66 @@
+Public Sub TopAlarms
+dim qry, Name , i ,obj
+
+Set qry = Server.Query("SELECT TOP( 100000 ) Source, RecordTime, Message  FROM CDBEVENTJOURNAL  WHERE   ( RecordTime BETWEEN { OPC 'D - 7D' } AND { OPC 'H+1H' } ) AND ( Source LIKE 'EPIC%' ) AND ( Message LIKE '%Alarm raised%' )  ORDER BY   Source ASC") 
+'Mimic.Layers("New Layer").Item("SQL_1").Sql="SELECT TOP( 100000 )   Source, RecordTime, Message  FROM   CDBEVENTJOURNAL  WHERE   ( RecordTime BETWEEN { OPC 'D - 7D' } AND { OPC 'H+1H' } ) AND ( Source LIKE 'EPIC%' ) AND ( Message LIKE '%Alarm raised%' )  ORDER BY   Source ASC"
+msgBox "Total Alarms: " & qry.RowCount
+
+Dim Names(100000)
+Dim Numbers(100000)
+AlarmCount = 1
+AlarmIndex = 1
+
+for i=0 To (qry.rowcount - 1 )
+		Name = qry.rows
+		
+			
+Next
+Names(1)=Name(0,0)
+Numbers(1)=1	
+for i=1 To (qry.rowcount - 1 )
+	if Name(i,0)=Name(i-1,0) then
+	 	AlarmCount =AlarmCount +1
+		Numbers(AlarmIndex)=AlarmCount
+	ELSE AlarmIndex=AlarmIndex+1
+		 AlarmCount =1
+		 Names(AlarmIndex)=	Name(i,0) 
+		 Numbers(AlarmIndex)=AlarmCount	
+	End if	 	
+Next
+
+
+For i = 1 To qry.rowcount
+    For j = i + 1 To qry.rowcount
+        If Numbers(i) < Numbers(j) Then
+            temp = Numbers(i)
+            Numbers(i) = Numbers(j)
+            Numbers(j) = temp
+            
+            temp2 = Names(i)
+            Names(i) = Names(j)
+            Names(j) = temp2
+        End If
+    Next 
+Next 
+Mimic.Layers("New Layer").Item("T_1").Text=Names(1)
+Mimic.Layers("New Layer").Item("T_2").Text=Numbers(1)
+Mimic.Layers("New Layer").Item("T_3").Text=Names(2)
+Mimic.Layers("New Layer").Item("T_4").Text=Numbers(2)
+Mimic.Layers("New Layer").Item("T_5").Text=Names(3)
+Mimic.Layers("New Layer").Item("T_6").Text=Numbers(3)
+Mimic.Layers("New Layer").Item("T_7").Text=Names(4)
+Mimic.Layers("New Layer").Item("T_8").Text=Numbers(4)
+Mimic.Layers("New Layer").Item("T_9").Text=Names(5)
+Mimic.Layers("New Layer").Item("T_10").Text=Numbers(5)
+Mimic.Layers("New Layer").Item("T_11").Text=Names(6)
+Mimic.Layers("New Layer").Item("T_12").Text=Numbers(6)
+Mimic.Layers("New Layer").Item("T_13").Text=Names(7)
+Mimic.Layers("New Layer").Item("T_14").Text=Numbers(7)
+Mimic.Layers("New Layer").Item("T_15").Text=Names(8)
+Mimic.Layers("New Layer").Item("T_16").Text=Numbers(8)
+Mimic.Layers("New Layer").Item("T_17").Text=Names(9)
+Mimic.Layers("New Layer").Item("T_18").Text=Numbers(9)
+Mimic.Layers("New Layer").Item("T_19").Text=Names(10)
+Mimic.Layers("New Layer").Item("T_20").Text=Numbers(10)
+msgBox "Completed"
+End Sub
